@@ -5,6 +5,7 @@ import {
   authorization,
 } from "../middlewares/passport.middleware.mjs";
 import sessionsControllers from "../controllers/sessions.controllers.mjs";
+import { sendMail } from "../utils/sendMails.mjs";
 
 const router = Router();
 
@@ -43,5 +44,31 @@ router.get(
 );
 
 router.get("/logout", sessionsControllers.logout);
+
+router.get("/email", async (req, res) => {
+  const { name } = req.body;
+
+  const template = `
+    <div>
+      <h1> Bienvenid@ ${name} a nuestra App </h1>
+      <img src="cid:gatito" />
+    </div>
+  `;
+
+  try {
+    await sendMail(
+      "alepaillas@gmail.com",
+      "Test nodemailer",
+      "Este es un mensaje de prueba",
+      template,
+    );
+    return res.status(200).json({ status: "ok", msg: "Email enviado." });
+  } catch (error) {
+    console.error("Failed to send email:", error);
+    return res
+      .status(500)
+      .json({ status: "error", msg: "Failed to send email." });
+  }
+});
 
 export default router;
