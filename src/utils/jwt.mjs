@@ -1,14 +1,17 @@
-import { request, response } from "express";
 import jwt from "jsonwebtoken";
 import envConfig from "../config/env.config.mjs";
 
 const JWT_PRIVATE_KEY = envConfig.JWT_PRIVATE_KEY;
 
 export const generateToken = (user) => {
-  const { _id, email, role } = user;
-  const token = jwt.sign({ _id, email, role }, JWT_PRIVATE_KEY, {
-    expiresIn: "1m",
-  });
+  const { _id, email, role, first_name, last_name } = user;
+  const token = jwt.sign(
+    { _id, email, role, first_name, last_name },
+    JWT_PRIVATE_KEY,
+    {
+      expiresIn: "1m",
+    },
+  );
   return token;
 };
 

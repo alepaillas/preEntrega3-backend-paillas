@@ -1,8 +1,7 @@
-import { generateToken, verifyToken } from "../utils/jwt.mjs";
+import { generateToken } from "../utils/jwt.mjs";
 import envConfig from "../config/env.config.mjs";
-import { isValidPassword } from "../utils/bcrypt.mjs";
-import usersServices from "../services/users.services.mjs";
 import { userResponseDto } from "../dto/userResponse.dto.mjs";
+import { jwtResponseDto } from "../dto/jwtResponse.dto.mjs";
 
 const COOKIE_TOKEN = envConfig.COOKIE_TOKEN;
 
@@ -32,30 +31,11 @@ const login = async (req, res) => {
   }
 };
 
-const jwt = async (req, res) => {
-  try {
-    const { email, password } = req.body;
-
-    const user = await usersServices.getByEmail(email);
-    if (!user || !isValidPassword(user, password)) {
-      return res
-        .status(401)
-        .json({ status: "error", msg: "usuario o contraseña no válido" });
-    }
-
-    const token = generateToken(user);
-    res.cookie(COOKIE_TOKEN, token, { httpOnly: true });
-    req.session.user = user; // seteamos el user en la sesión para recuperarlo en el front
-    return res.status(200).json({ status: "success", payload: user, token });
-  } catch (error) {
-    console.log(error);
-    res.status(500).json({ status: "Error", msg: "Internal Server Error" });
-  }
-};
-
 const current = (req, res) => {
   try {
-    return res.status(200).json({ status: "success", payload: req.user });
+    const user = req.user;
+    const jwtDTO = jwtResponseDto(user);
+    return res.status(200).json({ status: "success", payload: jwtDTO });
   } catch (error) {
     console.log(error);
     res.status(500).json({ status: "Error", msg: "Internal Server Error" });
@@ -87,7 +67,6 @@ const logout = async (req, res) => {
 export default {
   register,
   login,
-  jwt,
   current,
   loginGithub,
   logout,

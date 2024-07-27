@@ -3,7 +3,7 @@ import { Router } from "express";
 const router = Router();
 
 router.get("/", (req, res) => {
-  // si existe una sesión vamos al index, sino al login
+  // si existe una sesión mostramos el nombre de usuario, sino lo seteamos como anon
   if (req.session.user) {
     res.render("index", {
       style: "output.css",
@@ -13,7 +13,7 @@ router.get("/", (req, res) => {
   } else {
     res.render("index", {
       style: "output.css",
-      user: {email: "anon"},
+      user: {first_name: "anon"},
     });
   }
 });

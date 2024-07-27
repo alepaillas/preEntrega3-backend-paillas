@@ -22,7 +22,7 @@ const deleteOne = async (cid) => {
   return true;
 };
 
-const addProductToCart = async (cid, pid, quantity = 1) => {
+const addProduct = async (cid, pid, quantity = 1) => {
   const product = await productModel.findOne({ _id: pid });
   if (!product) return { product: false };
   const cart = await cartModel.findOne({ _id: cid });
@@ -44,7 +44,7 @@ const addProductToCart = async (cid, pid, quantity = 1) => {
   return cartUpdate;
 };
 
-const deleteProductInCart = async (cid, pid) => {
+const deleteProduct = async (cid, pid) => {
   // Check if cart exists
   const cart = await cartModel.findOne({ _id: cid });
   if (!cart) return { cart: false };
@@ -85,7 +85,7 @@ const updateProductQuantity = async (cid, pid, newQuantity) => {
   return updatedCart;
 };
 
-const clearCart = async (cid) => {
+const clear = async (cid) => {
   const cart = await cartModel.findOne({ _id: cid });
   if (!cart) return {};
   const cartEmpty = await cartModel.findOneAndUpdate(
@@ -124,9 +124,9 @@ export default {
   getById,
   create,
   deleteOne,
-  addProductToCart,
-  deleteProductInCart,
+  addProduct,
+  deleteProduct,
   updateProductQuantity,
-  clearCart,
+  clear,
   update,
 };

@@ -1,34 +1,39 @@
 import cartsRepository from "../persistences/mongo/repositories/carts.repository.mjs";
 
-const createCart = async () => {
+const getAll = async () => {
+  return await cartsRepository.getAll();
+};
+
+const getById = async (id) => {
+  return await cartsRepository.getById(id);
+};
+
+const create = async () => {
   return await cartsRepository.create();
 };
 
-const addProductToCart = async (cid, pid) => {
-  return await cartsRepository.addProductToCart(cid, pid);
+const addProduct = async (cid, pid) => {
+  return await cartsRepository.addProduct(cid, pid);
 };
 
 const updateProductQuantity = async (cid, pid, quantity) => {
   return await cartsRepository.updateProductQuantity(cid, pid, quantity);
 };
 
-const deleteProductInCart = async (cid, pid) => {
-  return await cartsRepository.deleteProductInCart(cid, pid);
+const deleteProduct = async (cid, pid) => {
+  return await cartsRepository.deleteProduct(cid, pid);
 };
 
-const getCartById = async (id) => {
-  return await cartsRepository.getById(id);
-};
-
-const clearCart = async (cid) => {
-  return await cartsRepository.clearCart(cid);
+const clear = async (cid) => {
+  return await cartsRepository.clear(cid);
 };
 
 export default {
-  createCart,
-  addProductToCart,
+  getAll,
+  getById,
+  create,
+  addProduct,
   updateProductQuantity,
-  deleteProductInCart,
-  getCartById,
-  clearCart,
+  deleteProduct,
+  clear,
 };

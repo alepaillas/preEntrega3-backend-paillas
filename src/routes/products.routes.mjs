@@ -7,19 +7,29 @@ import {
 
 const router = Router();
 
-router.get(
-  "/",
-  passportCall("jwt"),
-  authorization("user"),
-  productsControllers.getAll,
-);
+router.get("/", productsControllers.getAll);
 
 router.get("/:id", productsControllers.getById);
 
-router.post("/", productsControllers.create);
+router.post(
+  "/",
+  passportCall("jwt"),
+  authorization("admin"),
+  productsControllers.create,
+);
 
-router.put("/:id", productsControllers.update);
+router.put(
+  "/:id",
+  passportCall("jwt"),
+  authorization("admin"),
+  productsControllers.update,
+);
 
-router.delete("/:id", productsControllers.deleteOne);
+router.delete(
+  "/:id",
+  passportCall("jwt"),
+  authorization("admin"),
+  productsControllers.deleteOne,
+);
 
 export default router;

@@ -1,7 +1,7 @@
 import cartsServices from "../services/carts.services.mjs";
 
 // devuelve todos los carritos
-const getAllCarts = async (req, res) => {
+const getAll = async (req, res) => {
   try {
     const carts = await cartsServices.getAll();
     res.status(200).json({ status: "success", payload: carts });
@@ -12,7 +12,7 @@ const getAllCarts = async (req, res) => {
 };
 
 // devuelve el carrito por id
-const getCartById = async (req, res) => {
+const getById = async (req, res) => {
   try {
     const { cid } = req.params;
     const cart = await cartsServices.getById(cid);
@@ -29,7 +29,7 @@ const getCartById = async (req, res) => {
 };
 
 // crea un nuevo carrito
-const createCart = async (req, res) => {
+const create = async (req, res) => {
   try {
     const cart = await cartsServices.create();
     res.status(201).json({ status: "success", payload: cart });
@@ -40,12 +40,12 @@ const createCart = async (req, res) => {
 };
 
 // agrega un producto al carrito
-const addProductToCart = async (req, res) => {
+const addProduct = async (req, res) => {
   try {
     // Extraemos el Id de los request parameters
     const cartId = req.params.cid;
     const productId = req.params.pid;
-    const cart = await cartsServices.addProductToCart(cartId, productId);
+    const cart = await cartsServices.addProduct(cartId, productId);
     if (cart.product == false)
       return res.status(404).json({
         status: "Error",
@@ -64,10 +64,10 @@ const addProductToCart = async (req, res) => {
 };
 
 // elimina del carrito el producto seleccionado
-const deleteProductInCart = async (req, res) => {
+const deleteProduct = async (req, res) => {
   try {
     const { cid, pid } = req.params;
-    const cart = await cartsServices.deleteProductInCart(cid, pid);
+    const cart = await cartsServices.deleteProduct(cid, pid);
     if (cart.product == false)
       return res.status(404).json({
         status: "Error",
@@ -130,7 +130,7 @@ const updateProductQuantity = async (req, res) => {
 };
 
 // elimina todos los productos del carrito
-const clearCart = async (req, res) => {
+const clear = async (req, res) => {
   try {
     const { cid } = req.params;
     const cart = await cartsServices.getById(cid);
@@ -139,7 +139,7 @@ const clearCart = async (req, res) => {
         status: "Error",
         msg: `No se encontró el carrito con el id ${cid}`,
       });
-    const clearedCart = await cartsServices.clearCart(cid);
+    const clearedCart = await cartsServices.clear(cid);
     res.status(200).json({ status: "success", payload: clearedCart });
   } catch (error) {
     console.log(error);
@@ -171,11 +171,11 @@ const clearCart = async (req, res) => {
  */
 
 export default {
-  getAllCarts,
-  getCartById,
-  createCart,
-  addProductToCart,
-  deleteProductInCart,
+  getAll,
+  getById,
+  create,
+  addProduct,
+  deleteProduct,
   updateProductQuantity,
-  clearCart,
+  clear,
 };

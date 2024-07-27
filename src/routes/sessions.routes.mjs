@@ -35,8 +35,6 @@ router.get(
   },
 );
 
-router.post("/jwt", passportCall("jwt"), sessionsControllers.jwt);
-
 router.get(
   "/current",
   passportCall("jwt"),
