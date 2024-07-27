@@ -80,6 +80,7 @@ const getById = async (req, res) => {
     res.status(500).json({ status: "Error", msg: "Internal server error" });
   }
 };
+
 const create = async (req, res) => {
   try {
     const product = req.body;

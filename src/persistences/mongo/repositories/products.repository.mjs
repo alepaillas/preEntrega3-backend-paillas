@@ -16,8 +16,7 @@ const create = async (data) => {
 };
 
 const update = async (id, data) => {
-  await productModel.findByIdAndUpdate(id, data);
-  const product = await productModel.findById(id);
+  const product = await productModel.findByIdAndUpdate(id, data, { new: true });
   return product;
 };
 

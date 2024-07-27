@@ -18,7 +18,8 @@ const create = async (data) => {
 };
 
 const update = async (id, data) => {
-  const product = await productsRepository.update(id, data);
+  await productsRepository.update(id, data);
+  const product = await productsRepository.getById(id);
   return product;
 };
 

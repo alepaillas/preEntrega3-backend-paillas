@@ -63,4 +63,11 @@ router.put(
   cartsControllers.updateProductQuantity,
 );
 
+router.get(
+  "/:cid/purchase",
+  passportCall("jwt"),
+  authorization("user"),
+  cartsControllers.purchaseCart,
+);
+
 export default router;

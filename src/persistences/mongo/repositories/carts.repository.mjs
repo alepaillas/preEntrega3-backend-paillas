@@ -65,6 +65,28 @@ const deleteProduct = async (cid, pid) => {
   return updatedCart;
 };
 
+const deleteProducts = async (cartId, productIds) => {
+  try {
+    const cart = await cartModel
+      .findByIdAndUpdate(
+        cartId,
+        {
+          $pull: { products: { product: { $in: productIds } } },
+        },
+        { new: true }, // Ensure the updated document is returned
+      )
+      .populate("products.product");
+
+    if (!cart) {
+      throw new Error("Cart not found");
+    }
+
+    return cart;
+  } catch (error) {
+    throw error;
+  }
+};
+
 const updateProductQuantity = async (cid, pid, newQuantity) => {
   // Check if cart exists
   const cart = await cartModel.findOne({ _id: cid });
@@ -124,6 +146,7 @@ export default {
   getById,
   create,
   deleteOne,
+  deleteProducts,
   addProduct,
   deleteProduct,
   updateProductQuantity,
